@@ -18,9 +18,12 @@ Cách code item cơ bản:
 
     1.6. Item sẽ không cần va chạm vật lý với người chơi, tức người chơi sẽ đi xuyên qua Item và nhận nó -> Chọn Collider và tick Is Trigger
 
-   
-3. Tạo script loại item cần code (ItemHealth | ItemAmmo | ItemFuel), kế thừa từ class Item đã có trong Scripts/Combat/Item.cs
-
-4. Lớp cha Item như đã có hai phương thức chính là
+3. Lớp cha Item trong Scripts/Item/Item.cs đã có hai phương thức chính là:
    OnTriggerEnter(Collider other): Phát hiện nếu đối tượng va chạm là other có tag là "Player" thì Item sẽ lưu lại đối tượng Player vào playerObject, thực hiện hàm giveItemToPlayer() và tự huỷ chính nó
    giveItemToPlayer(): Đây chính là hàm để các ông viết thêm logic mong muốn cho loại item mà các ông code.
+   
+4. Tạo script loại item cần code (ItemHealth | ItemAmmo | ItemFuel), kế thừa từ class Item trên và code
+
+5. Sau khi code xong, chọn thực thể 3D tạo ở trên, lấy script vừa code đó và kéo vào tab Inspector của thực thể đó để thêm component
+
+6. Chạy thử để test logic
