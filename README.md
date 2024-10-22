@@ -1,6 +1,9 @@
-Linh: Code ItemHealth để player đi đến nhặt và hồi máu (nếu thanh máu hồi => đạt)
-Lâm: Code ItemFuel để player nhặt và cộng thêm vào số nhiên liệu hiện tại, nếu có thể hãy code hiển thị số nhiên liệu trên màn hình (nếu nhiên liệu tăng => đạt)
-Duy: Code ItemAmmo để player nhăt và cộng thêm vào tổng số đạn hiện tại (nếu tổng số đạn tăng => đạt)
+Linh: Code ItemAmmo để player nhăt và cộng thêm vào tổng số đạn hiện tại (Có hai loại đạn là Đạn thường và Lựu đạn)
+
+Lâm: Code ItemFuel để player nhặt và cộng thêm vào số nhiên liệu hiện tại (Có hai loại là loại nhiên liệu nhỏ và lớn)
+
+Duy: Code ItemHealth để player đi đến nhặt và hồi máu
+
 Cả 3 lớp trên đều kế thừa từ Item
 
 Cách code item cơ bản:
