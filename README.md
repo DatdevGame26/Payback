@@ -1,6 +1,9 @@
-Linh: Code ItemHealth để player đi đến nhặt và hồi máu (nếu thanh máu hồi => đạt)
-Lâm: Code ItemFuel để player nhặt và cộng thêm vào số nhiên liệu hiện tại, nếu có thể hãy code hiển thị số nhiên liệu trên màn hình (nếu nhiên liệu tăng => đạt)
-Duy: Code ItemAmmo để player nhăt và cộng thêm vào tổng số đạn hiện tại (nếu tổng số đạn tăng => đạt)
+Linh: Code ItemAmmo để player nhăt và cộng thêm vào tổng số đạn hiện tại (Có hai loại đạn là Đạn thường và Lựu đạn)
+
+Lâm: Code ItemFuel để player nhặt và cộng thêm vào số nhiên liệu hiện tại (Có hai loại là loại nhiên liệu nhỏ và lớn)
+
+Duy: Code ItemHealth để player đi đến nhặt và hồi máu
+
 Cả 3 lớp trên đều kế thừa từ Item
 
 Cách code item cơ bản:
@@ -22,7 +25,7 @@ Cách code item cơ bản:
    OnTriggerEnter(Collider other): Phát hiện nếu đối tượng va chạm là other có tag là "Player" thì Item sẽ lưu lại đối tượng Player vào playerObject, thực hiện hàm giveItemToPlayer() và tự huỷ chính nó
    giveItemToPlayer(): Đây chính là hàm để các ông viết thêm logic mong muốn cho loại item mà các ông code.
    
-4. Tạo script loại item cần code (ItemHealth | ItemAmmo | ItemFuel), kế thừa từ class Item trên và code
+4. Tạo script trong thư mục Item, tên là loại item cần code (ItemHealth | ItemAmmo | ItemFuel), kế thừa từ class Item trên
 
 5. Sau khi code xong, chọn thực thể 3D tạo ở trên, lấy script vừa code đó và kéo vào tab Inspector của thực thể đó để thêm component
 
