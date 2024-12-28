@@ -1,7 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
+/* Đây là lớp thực thể sống, tức đối tượng sẽ có máu và có thể bị thương và bị tiêu diệt
+ * Các đối tượng như là người chơi hay kẻ thù đều là thực thể sống và kế thừa từ lớp này
+ */
 
 public class LiveEntity : MonoBehaviour, IDamageable
 {
@@ -52,5 +56,7 @@ public class LiveEntity : MonoBehaviour, IDamageable
     {
         return currentHealth;
     }
+
+    public bool IsDead() { return isDead; }
 
 }

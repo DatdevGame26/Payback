@@ -4962,6 +4962,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hostileTag: 1
   explosionDamage: 20
+  soundName: explosion_common
+  exploMaxSoundRange: 50
 --- !u!1 &2908484367613379252
 GameObject:
   m_ObjectHideFlags: 0

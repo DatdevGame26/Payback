@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnTurret: {fileID: 4400885049427408488, guid: 72e23007abe770541924737babe2abc6, type: 3}
-  fuel: 100
+  fuel: 500
   buildingTime: 10
   inBuildingProcessFX: {fileID: 1795131909446690097}
   finishBuildingFX: {fileID: 3237427687176485201, guid: dd6d418782feccf4ab110af995e8e59d, type: 3}

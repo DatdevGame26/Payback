@@ -11,6 +11,7 @@ public class Turret : LiveEntity
     [SerializeField] protected LayerMask obstacleLayer;
     [SerializeField] protected bool ignoreObstacle = false;
     [SerializeField] protected bool canShootFlyingEnemy = true;
+
     protected Transform currentTarget;
     protected float timer;
 
@@ -34,6 +35,15 @@ public class Turret : LiveEntity
         {
             findEnemyInAttackRange();
             return;
+        }
+        else
+        {
+            LiveEntity liveEntity = currentTarget.GetComponent<LiveEntity>();
+            if (liveEntity != null && liveEntity.IsDead())
+            {
+                currentTarget = null;
+                return;
+            }
         }
 
         if (canAttackEnemy())

@@ -7,9 +7,10 @@ public class TurretShooter : Turret
 {
     [Header("Turret Shooter")]
     [SerializeField] Transform gunTopTransform;
-    [SerializeField] float rotateSpeed;
     [SerializeField] GameObject bulletPrefab;
+    [SerializeField] float rotateSpeed;
     [SerializeField] float bulletSpeed;
+    [SerializeField] float accuracy;
     [SerializeField] protected GameObject muzzleFlash;
 
     Vector3 shootDirection;
@@ -51,11 +52,11 @@ public class TurretShooter : Turret
     protected override void Attack()
     {
         base.Attack();
-        float spreadAngle = (float)((1 - 0.8f) * 10);
+        float spreadAngle = (float)((1 - accuracy) * 10);
         shootDirection.x += Random.Range(-spreadAngle, spreadAngle) * 0.01f;
         shootDirection.y += Random.Range(-spreadAngle, spreadAngle) * 0.01f;
 
-        GameObject newBullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        GameObject newBullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(shootDirection));
         newBullet.transform.forward = shootDirection;
         Rigidbody bulletRb = newBullet.GetComponent<Rigidbody>();
         if (bulletRb != null)
@@ -66,6 +67,8 @@ public class TurretShooter : Turret
         {
             Instantiate(muzzleFlash, firePoint.position, firePoint.rotation);
         }
+
+        AudioManager.Instance.PlaySound("turret_shooter", gameObject);
     }
 
     protected override bool canAttackEnemy()

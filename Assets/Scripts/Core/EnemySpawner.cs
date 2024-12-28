@@ -5,61 +5,135 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public List<GameObject> activeEnemies = new List<GameObject>();
+
+    [SerializeField] bool stopSpawning;
     [SerializeField] TextMeshProUGUI prepareText;
-    [SerializeField] GameObject[] enemyPrefabs;  
-    [SerializeField] Transform[] spawnPoints;   
+    [SerializeField] FillBar progressBar;
+    [SerializeField] int enemyCountEachWave;
+
+    [Header("Normal Enemy")]
+    [SerializeField] GameObject enemySpawnBall;
+    [SerializeField] GameObject[] enemyPrefabs;
+    [SerializeField] Transform[] spawnPoints;
     [SerializeField] float spawnInterval = 3f;
     [SerializeField] float waitToSpawnTime = 15f;
-    private List<GameObject> activeEnemies = new List<GameObject>(); // Danh sách các kẻ thù đang tồn tại trên bản đồ
-    private float timer;  // Biến đếm thời gian giữa các lần spawn
 
+    [Header("Boss")]
+    [SerializeField] GameObject bossSpawnBall;
+    [SerializeField] int spawnCountToTriggerBossFight;
+    [SerializeField] Transform bossSpawnPos;
+    [SerializeField] float waitToSpawnBossTime;
+
+    List<GameObject> enemyPrefabsWillBeSpawn = new List<GameObject>();
+    float spawnTimer;
+    int currentAddEnemyIndex;
+
+    int nextWaveCount;
+    int enemySpawnCount;
+    int mark75PercentSpawn;
+    
+    private void Awake()
+    {
+        enemyPrefabsWillBeSpawn.Add(enemyPrefabs[currentAddEnemyIndex]);
+        nextWaveCount = enemyCountEachWave;
+        mark75PercentSpawn = Mathf.RoundToInt(0.75f * spawnCountToTriggerBossFight);
+    }
     void Start()
     {
-        timer = waitToSpawnTime; 
-        prepareText.gameObject.SetActive(true);
-        prepareText.text = $"You have {timer} seconds to prepare!";
+        spawnTimer = waitToSpawnTime;
         StartCoroutine(PrepareCountdown());
     }
 
     void Update()
     {
-        // Kiểm tra và xóa kẻ thù đã chết (null) ra khỏi danh sách
         activeEnemies.RemoveAll(enemy => enemy == null);
 
-        // Chỉ spawn kẻ thù nếu số lượng hiện tại nhỏ hơn 10
+        if (stopSpawning) return;
+
+        HandleSpawnEnemy();
+        progressBar.updateFillBar(enemySpawnCount, spawnCountToTriggerBossFight);
+    }
+
+    private void HandleSpawnEnemy()
+    {
         if (activeEnemies.Count < 10)
         {
-            // Giảm thời gian chờ và kiểm tra nếu timer lớn hơn 0
-            if (timer > 0)
-            {
-                timer -= Time.deltaTime;  // Giảm thời gian chờ
-
-                // Cập nhật prepareText với thời gian còn lại
-                prepareText.text = $"You have {Mathf.Ceil(timer)} seconds to prepare!";
-            }
+            if (spawnTimer > 0) spawnTimer -= Time.deltaTime;
             else
             {
-                // Khi timer về 0, bắt đầu sinh kẻ thù
                 SpawnEnemy();
-                timer = spawnInterval;  // Reset lại thời gian chờ
+                spawnTimer = spawnInterval;
             }
         }
     }
 
-    void SpawnEnemy()
+    public void SpawnEnemy()
     {
-        GameObject randomEnemy = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+        GameObject randomEnemy = enemyPrefabsWillBeSpawn[Random.Range(0, enemyPrefabsWillBeSpawn.Count)];
         Vector3 randomSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
 
-        if (randomEnemy.name == "Flying Robot") randomSpawnPoint.y = 10;
-        GameObject spawnedEnemy = Instantiate(randomEnemy, randomSpawnPoint, Quaternion.identity);
+        SpawnEnemyBall spawn = Instantiate(enemySpawnBall, transform.position, Quaternion.identity).GetComponent<SpawnEnemyBall>();
+        if (spawn != null)
+        {
+            spawn.setEnemySpaw(randomEnemy);
+            spawn.setSpawnPosition(randomSpawnPoint);
+        }
 
-        activeEnemies.Add(spawnedEnemy);
+        enemySpawnCount++;
+        if (enemySpawnCount >= spawnCountToTriggerBossFight)
+        {
+            stopSpawning = true;
+            StartCoroutine(PrepareToFightBossCountdown(waitToSpawnBossTime));
+            return;
+        }
+        if(enemySpawnCount == mark75PercentSpawn)
+        {
+            enemyPrefabsWillBeSpawn.RemoveRange(0, 3);
+        }
+
+        if (enemySpawnCount >= nextWaveCount)
+        {
+            nextWaveCount += enemyCountEachWave;
+            StartCoroutine(WaitForNextWave());
+        }
+    }
+
+
+    private IEnumerator PrepareToFightBossCountdown(float seconds)
+    {
+        prepareText.gameObject.SetActive(true);
+        prepareText.text = "Kẻ lãnh đạo của binh đoàn rô-bốt đã cảm nhận được hỗn loạn mà bạn gây ra. Hãy chuẩn bị — Hắn đang đến!";
+        progressBar.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(seconds);
+
+        Instantiate(bossSpawnBall, bossSpawnPos.position, Quaternion.identity);
+        prepareText.gameObject.SetActive(false);
     }
 
     private IEnumerator PrepareCountdown()
     {
-        yield return new WaitForSeconds(waitToSpawnTime); // Chờ 30 giây
-        prepareText.gameObject.SetActive(false); // Tắt prepareText
+        prepareText.gameObject.SetActive(true);
+        prepareText.text = "Một binh đoàn robot hùng hậu đang tiến đến bạn! Hãy sẵn sàng đối mặt!";
+        yield return new WaitForSeconds(waitToSpawnTime);
+        prepareText.gameObject.SetActive(false);
     }
+
+    IEnumerator WaitForNextWave()
+    {
+        prepareText.gameObject.SetActive(true);
+        prepareText.text = "Tấn công đợt tiếp theo đang đến...";
+        stopSpawning = true;
+        if(currentAddEnemyIndex < enemyPrefabs.Length - 1)
+        {
+            currentAddEnemyIndex++;
+            enemyPrefabsWillBeSpawn.Add(enemyPrefabs[currentAddEnemyIndex]);
+        }
+        yield return new WaitForSeconds(20);
+        stopSpawning = false;
+        prepareText.gameObject.SetActive(false);
+    }
+
+    
 }

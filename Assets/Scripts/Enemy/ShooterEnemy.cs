@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShooterEnemy : Enemy
+public class ShooterEnemy : NormalEnemy
 {
     [Header("Enemy: Shooter")]
     [SerializeField] GameObject bullet;
@@ -26,7 +26,7 @@ public class ShooterEnemy : Enemy
     {
         base.Update();
 
-        firePoint.LookAt(playerT.position);
+        firePoint.LookAt(playerTransform.position);
         detectObstacle();
 
     }
@@ -56,17 +56,16 @@ public class ShooterEnemy : Enemy
     {
         base.Attack();
         animator.SetTrigger("Attack");
-
+        AudioManager.Instance.PlaySound("enemy_shooter", gameObject);
         Vector3 shootDir = firePoint.transform.forward;
 
         float spreadAngle = (float)((1 - 0.8f) * 10);
         shootDir.x += Random.Range(-spreadAngle, spreadAngle) * 0.01f;
         shootDir.y += Random.Range(-spreadAngle, spreadAngle) * 0.01f;
 
-        Rigidbody bulletRB = Instantiate(bullet, firePoint.position, Quaternion.identity).GetComponent<Rigidbody>();
+        Rigidbody bulletRB = Instantiate(bullet, firePoint.position, Quaternion.LookRotation(shootDir)).GetComponent<Rigidbody>();
         if(bulletRB != null )
         {
-            bulletRB.transform.forward = shootDir;
             bulletRB.velocity = shootDir * bulletSpeed;
         }
     }

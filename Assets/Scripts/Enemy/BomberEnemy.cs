@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BomberEnemy : Enemy
+public class BomberEnemy : NormalEnemy
 {
-    [SerializeField] GameObject Explosion;
     protected override void Awake()
     {
         base.Awake();
@@ -17,16 +16,18 @@ public class BomberEnemy : Enemy
 
     protected override void Update()
     {
-       base.Update();
-    }
-    protected override void Attack()
-    {
-        Instantiate(Explosion, transform.position, Quaternion.identity);
-        Die();
+        base.Update();
     }
 
     public override void doSomethingThenDie()
     {
-        Attack();
+        itemSpawner.Spawn();
+        blowUp();
+    }
+
+    public void blowUp()
+    {
+        Instantiate(deathExplosion, transform.position, Quaternion.identity);
+        Die();
     }
 }

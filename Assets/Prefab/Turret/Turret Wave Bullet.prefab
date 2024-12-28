@@ -4970,9 +4970,9 @@ GameObject:
   - component: {fileID: 5811738428353081097}
   - component: {fileID: 4133934909843813959}
   - component: {fileID: 726643302313961687}
-  - component: {fileID: 7665632046880245675}
   - component: {fileID: 7454226381165983731}
   - component: {fileID: 2334642298021594100}
+  - component: {fileID: 1198488313015270834}
   m_Layer: 0
   m_Name: Turret Wave Bullet
   m_TagString: Untagged
@@ -10059,18 +10059,6 @@ MonoBehaviour:
     perlinColor: 0
     perlinColorSpeed: 1
   fadeOutReference: {fileID: 0}
---- !u!114 &7665632046880245675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 457824101415546588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96bcba7b6f2fd2244bbdc417ed7d679c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &7454226381165983731
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10117,8 +10105,25 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.02
+  m_Radius: 1.14
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1198488313015270834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457824101415546588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bcba7b6f2fd2244bbdc417ed7d679c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hostileTag: 0
+  bulletDamage: 10
+  isEnergy: 1
+  hitEffect: {fileID: 0}
+  lifeSpan: 4
 --- !u!1 &2530356313187375103
 GameObject:
   m_ObjectHideFlags: 0
@@ -15108,7 +15113,7 @@ Light:
   m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 857, z: -190, w: 0}
+  m_BoundingSphereOverride: {x: 4.5904e-41, y: -7.2900667e-37, z: 4.5904e-41, w: 9.403955e-38}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0

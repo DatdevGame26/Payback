@@ -33,8 +33,7 @@ public class TurretMissile : Turret
     protected override void Attack()
     {
         base.Attack();
-        Missile newMissile = Instantiate(missilePrefab, firePoint.position, Quaternion.identity).GetComponent<Missile>();
-        newMissile.transform.forward = Vector3.up;
+        Missile newMissile = Instantiate(missilePrefab, firePoint.position, Quaternion.LookRotation(Vector3.up)).GetComponent<Missile>();
         if(newMissile != null)
         {
             newMissile.setFollowTarget(currentTarget);
@@ -44,6 +43,7 @@ public class TurretMissile : Turret
         {
             missileRb.velocity = Vector3.up * missileSpeed;
         }
+        AudioManager.Instance.PlaySound("missile_launch", gameObject);
     }
 
 }

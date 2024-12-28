@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeEnemy : Enemy
+public class MeleeEnemy : NormalEnemy
 {
     [SerializeField] int meleeDamage;
     protected Player player;
     protected override void Awake()
     {
         base.Awake();
-        player = playerT.GetComponent<Player>();
+        player = playerTransform.GetComponent<Player>();
     }
 
     protected override void Start()
@@ -24,6 +24,13 @@ public class MeleeEnemy : Enemy
     protected override void Attack()
     {
         base.Attack();
-        player.Damage(meleeDamage);
+    }
+
+    public void dealMeleeDamage()
+    {
+        if (isPlayerInAttackRange())
+        {
+            player.Damage(meleeDamage);
+        }
     }
 }

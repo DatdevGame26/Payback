@@ -30,7 +30,7 @@ public class Crosshair : MonoBehaviour
         sniperCrosshair.SetActive(useScope);
         for (int i = 0; i < allLines.Length; i++)
         {
-            allLines[i].gameObject.SetActive(!useScope);
+            allLines[i].gameObject.SetActive(   useScope);
         }
     }
 }

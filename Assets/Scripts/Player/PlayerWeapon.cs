@@ -10,41 +10,67 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] Transform convergencePoint;
     [SerializeField] CameraFPS camFPS;
     [SerializeField] GameObject flashLight;
-    [Header("Shoot Info")]
+    [Header("Gun Info")]
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject grenade;
     [SerializeField] float fireRate;
-    [SerializeField] float bulletSpeed;
+    [SerializeField] float projectileSpeed;
     [Range(0f, 1f)][SerializeField] float accuracy;
     [SerializeField] float recoil;
     [Header("Ammo Info")]
     [SerializeField] int initialAmmo = 90;
     [SerializeField] int initialGrenade = 10;
     [SerializeField] int ammoCapacity;
+    [Header("Gun SFX")]
+    [SerializeField] AudioClip shootBulletSFX;
+    [SerializeField] AudioClip shootGrenadeSFX;
+    AudioSource weaponSource;
 
     int currentAmmo;
     int currentGrenade;
     int totalAmmo;
+    int bulletDamageLevel;
 
     float timer;
+    float stuckReloadTimer;
     float baseAccuracy;
-    
+
     bool isReloading;
     bool isFlashlighOn;
+
+
     void Start()
     {
+        weaponSource = GetComponent<AudioSource>();
+
         firePoint.LookAt(convergencePoint);
+
         baseAccuracy = accuracy;
         totalAmmo = initialAmmo;
         currentAmmo = ammoCapacity;
         currentGrenade = initialGrenade;
+
+        bulletDamageLevel = 0;
     }
 
     void Update()
     {
         timer -= Time.deltaTime;
         if (currentAmmo <= 0) Reload();
-        handleCrouch();
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))  accuracy = 1; 
+        else if (Input.GetKeyUp(KeyCode.LeftControl)) accuracy = baseAccuracy;
+
+        if (isReloading)
+        {
+            stuckReloadTimer += Time.deltaTime;
+            if(stuckReloadTimer >= 3)
+            {
+                isReloading = false;
+                stuckReloadTimer = 0;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             isFlashlighOn = !isFlashlighOn;
@@ -52,35 +78,23 @@ public class PlayerWeapon : MonoBehaviour
         }
     }
 
-    private void handleCrouch()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            accuracy = 1;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
-        {
-            accuracy = baseAccuracy;
-        }
-    }
-
     public void shootBullet()
     {
         if (timer <= 0 && !isReloading && currentAmmo > 0)
         {
-            float spreadAngle = (float)((1 - accuracy) * 10);
-            Vector3 shootDir = getRandomShotDir(spreadAngle * 0.01f);
+            Vector3 shootDir = getRandomShotDir();
 
-            Rigidbody bulletRB = Instantiate(bullet, firePoint.position, Quaternion.identity).GetComponent<Rigidbody>();
+            Rigidbody bulletRB = Instantiate(bullet, firePoint.position, Quaternion.LookRotation(shootDir)).GetComponent<Rigidbody>();
             if (bulletRB != null)
             {
-                bulletRB.transform.forward = shootDir;
-                bulletRB.velocity = shootDir * bulletSpeed;
+                bulletRB.velocity = shootDir * projectileSpeed;
             }
             camFPS.applyRecoil(recoil);
             timer = fireRate;
             currentAmmo--;
             animator.Play("player_gun_shoot", -1, 0);
+
+            AudioManager.Instance.PlaySound("player_shoot_bullet", gameObject);
         }
     }
 
@@ -91,11 +105,8 @@ public class PlayerWeapon : MonoBehaviour
             Rigidbody grenadeRB = Instantiate(grenade, firePoint.position, Quaternion.identity).GetComponent<Rigidbody>();
             if (grenadeRB != null)
             {
-                // Thiết lập vận tốc cho lựu đạn
-                grenadeRB.velocity = firePoint.forward * bulletSpeed / 4;
-
-                // Áp dụng lực quay
-                Vector3 torque = new Vector3(10, 10, 0); // Thay đổi giá trị này để điều chỉnh độ mạnh của lực quay
+                grenadeRB.velocity = getRandomShotDir() * projectileSpeed / 3.5f;
+                Vector3 torque = new Vector3(10, 10, 0);
                 grenadeRB.AddTorque(torque, ForceMode.Impulse);
             }
 
@@ -103,15 +114,17 @@ public class PlayerWeapon : MonoBehaviour
             timer = fireRate * 3;
             currentGrenade--;
             animator.Play("player_gun_shoot", -1, 0);
+            AudioManager.Instance.PlaySound("player_shoot_grenade", gameObject);
         }
     }
-
 
     public void Reload()
     {
         if (isReloading || currentAmmo == ammoCapacity || totalAmmo <= 0) return;
+        AudioManager.Instance.PlaySound("player_reload", gameObject);
         isReloading = true;
         animator.SetTrigger("Reload");
+        stuckReloadTimer = 0;
     }
 
     public void finishReload()
@@ -130,29 +143,39 @@ public class PlayerWeapon : MonoBehaviour
         isReloading = false;
     }
 
-    Vector3 getRandomShotDir(float spreadAmount)
+    Vector3 getRandomShotDir()
     {
-        float randomX = Random.Range(-spreadAmount, spreadAmount);
-        float randomY = Random.Range(-spreadAmount, spreadAmount);
-        float randomZ = Random.Range(-spreadAmount, spreadAmount);
+        float spreadAngle = (float)((1 - accuracy) * 10);
+        spreadAngle *= 0.01f;
+
+        float randomX = Random.Range(-spreadAngle, spreadAngle);
+        float randomY = Random.Range(-spreadAngle, spreadAngle);
+        float randomZ = Random.Range(-spreadAngle, spreadAngle);
 
         Vector3 shootDir = firePoint.transform.forward + new Vector3(randomX, randomY, randomZ);
         shootDir.Normalize();
         return shootDir;
     }
 
-    public float getAccuracy()
-    {
-        return accuracy;
-    }
+    #region Get Funcs
+    public float getAccuracy() { return accuracy; }
+    public string getAmmoSlashTotal() { return $"{currentAmmo} / {totalAmmo}"; }
+    public string getGrenadeLeft() { return currentGrenade.ToString(); }
+    #endregion
 
-    public string getAmmoSlashTotal()
-    {
-        return $"{currentAmmo} / {totalAmmo}";
-    }
+    #region Plus Bullet Funcs
+    public void plusAmmo(int amount) { totalAmmo += amount; }
+    public void plusGrenade(int amount) { currentGrenade += amount; }
+    #endregion
 
-    public string getGrenadeLeft()
+    #region Upgrade
+    public void increaseFireRate() { fireRate -= 0.03f; }
+    public void increaseProjectileSpeed() { projectileSpeed += 33; }
+    public void increaseAmmoCapacity() { ammoCapacity += 10; }
+    public void increaseBulletDamage()
     {
-        return currentGrenade.ToString() ;
+        bulletDamageLevel++;
+        bullet = Resources.Load<GameObject>($"Player Bullet/Bullet_Lvl_{bulletDamageLevel}");
     }
+    #endregion
 }

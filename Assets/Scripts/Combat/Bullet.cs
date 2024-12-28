@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,31 +6,42 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] HostileTag hostileTag;
-    [SerializeField] int bulletDamage;
+    [SerializeField] protected int bulletDamage;
     [SerializeField] bool isEnergy;
     [SerializeField] GameObject hitEffect;
-    void Start()
+    [SerializeField] float lifeSpan = 4;
+
+    protected Collider hitCollider;
+
+    protected virtual void Start()
     {
-        Destroy(gameObject, 4);
+        Destroy(gameObject, lifeSpan);
     }
 
     private void OnTriggerEnter(Collider other)
     {
- 
-        if (other.tag == "Obstacle")
+        hitCollider = other;
+        if (hitCollider.tag == "Obstacle")
         {
             createHitEffectAndDestroy();
         }
-        else if (other.tag == hostileTag.ToString())
+        else if (hitCollider.tag == hostileTag.ToString())
         {
-            IDamageable hostileEntity = other.GetComponent<IDamageable>();
+            IDamageable hostileEntity = hitCollider.GetComponent<IDamageable>();
             if (hostileEntity != null)
             {
                 hostileEntity.Damage(bulletDamage);
+                additionalEffect();
                 createHitEffectAndDestroy();
             }
         }
     }
+
+    protected virtual void additionalEffect()
+    {
+        
+    }
+
 
     protected void createHitEffectAndDestroy()
     {

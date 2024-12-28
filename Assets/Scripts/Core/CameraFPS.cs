@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class CameraFPS : MonoBehaviour
 {
+
     [SerializeField] float offsetY;
     [SerializeField] float crouchY;
     [SerializeField] float mouseSensitivity = 100f;
-    [SerializeField] float FOV_Zoom;
-    [SerializeField] Crosshair crosshair;
     [SerializeField] float recoilRecoverySpeed = 5f;
+    [SerializeField] Crosshair crosshair;
 
     Transform playerT;
+    Camera cam;
+    Player player;
+
     float xRotation = 0f;
 
     private float currentRecoilX = 0f;
@@ -21,7 +24,6 @@ public class CameraFPS : MonoBehaviour
     Vector3 targetPosition, normalPosition, crouchPosition;
     float startFOV;
 
-    Camera cam;
 
     void Start()
     {
@@ -32,12 +34,15 @@ public class CameraFPS : MonoBehaviour
         {
             crouchPosition = new Vector3(0, crouchY, 0);
             normalPosition = new Vector3(0, offsetY, 0);
+            player = playerT.GetComponent<Player>();
         }
         startFOV = cam.fieldOfView;
     }
 
     void Update()
     {
+        if (player.controllerIsStop()) return;
+
         handleCrouchingPOV();
 
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
@@ -70,7 +75,7 @@ public class CameraFPS : MonoBehaviour
 
     public void toggleScope(bool useScope)
     {
-        cam.fieldOfView = useScope ? FOV_Zoom : startFOV;
+        cam.fieldOfView = useScope ? 15 : startFOV;
         crosshair.toggleSniperCrosshair(useScope);
     }
 
@@ -80,4 +85,5 @@ public class CameraFPS : MonoBehaviour
         float randomRecoilY = Random.Range(-recoil, recoil) * 0.5f;
         currentRecoilY += randomRecoilY;
     }
+
 }

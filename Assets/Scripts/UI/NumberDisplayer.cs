@@ -5,26 +5,28 @@ using UnityEngine;
 
 public class NumberDisplayer : MonoBehaviour
 {
-    [SerializeField] GameObject player;
+    [SerializeField] GameObject playerGO;
     [SerializeField] TextMeshProUGUI ammoText;
     [SerializeField] TextMeshProUGUI grenadeText;
     [SerializeField] TextMeshProUGUI fuelText;
+    [SerializeField] TextMeshProUGUI healthText;
 
     PlayerWeapon playerWeapon;
-    TurretPlacer playerTurretPlacer;
+    Player player;
     void Start()
     {
-        playerWeapon = player.GetComponent<PlayerWeapon>();   
-        playerTurretPlacer = player.GetComponent<TurretPlacer>();   
+        playerWeapon = playerGO.GetComponent<PlayerWeapon>();
+        player = playerGO.GetComponent<Player>();   
     }
 
     void Update()
     {
-        if (player)
+        if (playerGO)
         {
             ammoText.text = playerWeapon.getAmmoSlashTotal();
-            fuelText.text = playerTurretPlacer.getTotalFuel();
+            fuelText.text = player.getCurrentFuel().ToString();
             grenadeText.text = playerWeapon.getGrenadeLeft();
+            healthText.text = $"{player.getCurrentHealth()} / {player.getMaxHealth()}";
         }
     }
 }

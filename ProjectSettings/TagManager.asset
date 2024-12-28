@@ -9,6 +9,8 @@ TagManager:
   - Obstacle
   - FxTemporaire
   - Road
+  - EnemySpawner
+  - BossHealthBar
   layers:
   - Default
   - TransparentFX

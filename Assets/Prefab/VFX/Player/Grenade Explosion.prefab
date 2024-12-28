@@ -4934,7 +4934,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hostileTag: 0
-  explosionDamage: 100
+  explosionDamage: 200
+  soundName: explosion_grenade
 --- !u!54 &3628176367897547936
 Rigidbody:
   m_ObjectHideFlags: 0

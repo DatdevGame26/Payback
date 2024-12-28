@@ -167,8 +167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnTurret: {fileID: 3228661991064435042, guid: 3b340ad28ba105244baf215a49bd4972, type: 3}
-  fuel: 300
-  buildingTime: 30
+  fuel: 2000
+  buildingTime: 20
   inBuildingProcessFX: {fileID: 2580378367218389949}
   finishBuildingFX: {fileID: 3237427687176485201, guid: dd6d418782feccf4ab110af995e8e59d, type: 3}
   canBePlacedMaterial: {fileID: 2100000, guid: b3d0fbeee6e9c664fa3b739c5a113369, type: 2}
@@ -371,11 +371,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 334376426768801396, guid: 817b4cf3ab651384792234da48c1ac9b, type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.61016315
+      value: 0.85115254
       objectReference: {fileID: 0}
     - target: {fileID: 334376426768801396, guid: 817b4cf3ab651384792234da48c1ac9b, type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.3254717
+      value: 0.32549024
       objectReference: {fileID: 0}
     - target: {fileID: 1371202974316466570, guid: 817b4cf3ab651384792234da48c1ac9b, type: 3}
       propertyPath: m_LocalScale.x
@@ -439,7 +439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4471815061555337617, guid: 817b4cf3ab651384792234da48c1ac9b, type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.7639432
+      value: 0.93017954
       objectReference: {fileID: 0}
     - target: {fileID: 4471815061555337617, guid: 817b4cf3ab651384792234da48c1ac9b, type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
@@ -459,7 +459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8429533013004806884, guid: 817b4cf3ab651384792234da48c1ac9b, type: 3}
       propertyPath: m_Color.g
-      value: 0.67007434
+      value: 0.960576
       objectReference: {fileID: 0}
     - target: {fileID: 8429533013004806884, guid: 817b4cf3ab651384792234da48c1ac9b, type: 3}
       propertyPath: m_Color.r

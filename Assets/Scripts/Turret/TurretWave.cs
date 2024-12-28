@@ -23,6 +23,7 @@ public class TurretWave : Turret
     {
         base.Attack();
         Instantiate(wave, firePoint.position, Quaternion.identity);
+        AudioManager.Instance.PlaySound("turret_wave", gameObject);
     }
 
 }

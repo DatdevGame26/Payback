@@ -6,9 +6,12 @@ public class Explosion : MonoBehaviour
 {
     [SerializeField] HostileTag hostileTag;
     [SerializeField] int explosionDamage;
+    [SerializeField] string soundName;
+    [SerializeField] float exploMaxSoundRange = 50;
     private void Start()
     {
         StartCoroutine(waitThenTurnOffCollider());
+        AudioManager.Instance.createSFXgameObject(soundName, transform.position, exploMaxSoundRange);
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -24,7 +27,11 @@ public class Explosion : MonoBehaviour
 
     IEnumerator waitThenTurnOffCollider()
     {
+        Collider col = GetComponent<Collider>();
         yield return new WaitForSeconds(0.1f);
-        GetComponent<Collider>().enabled = false;
+        if(col != null)
+        {
+            col.enabled = false;
+        }
     }
 }

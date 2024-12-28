@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
+    [SerializeField] HostileTag hostileTag;
     [SerializeField] GameObject explosion;
     [SerializeField] float explodeCountdown;
+    [SerializeField] bool inCountDownRange;
 
     float timer;
     void Start()
     {
+        if (inCountDownRange)
+        {
+            explodeCountdown = Random.Range(explodeCountdown - 2f, explodeCountdown + 2f);
+        }
         timer = explodeCountdown;
+        Destroy(gameObject, 15);
     }
 
     private void Update()
@@ -24,7 +31,7 @@ public class Grenade : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Enemy")
+        if(collision.gameObject.tag == hostileTag.ToString())
         {
             Explode();
         }

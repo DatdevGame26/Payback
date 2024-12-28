@@ -2,22 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wave : MonoBehaviour
+public class Wave : Bullet
 {
-    void Start()
+    protected override void additionalEffect()
     {
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Enemy")
+        base.additionalEffect();
+        Enemy enemy = hitCollider.GetComponent<Enemy>();
+        if (enemy != null)
         {
-            Enemy enemy = other.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.setNegativeEffect();
-            }
+            enemy.setNegativeEffect();
         }
     }
 }

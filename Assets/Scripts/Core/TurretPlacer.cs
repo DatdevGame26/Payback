@@ -2,44 +2,23 @@
 
 public class TurretPlacer : MonoBehaviour
 {
-    [SerializeField] int initFuel;
-    [SerializeField] GameObject[] allTempTurretPrefabs;
+    [SerializeField] Player player;
     [SerializeField] float placementDistance = 2f; // Khoảng cách sinh mô hình
     [SerializeField] LayerMask placementLayer; // LayerMask để đặt trụ lên
 
     GameObject currentTempTurretObject;
     TempTurret currentTempTurret;
     bool canPlaceTurret;
-    int totalFuel;
 
     private void Start()
     {
-        totalFuel = initFuel;
     }
 
     void Update()
     {
-        chooseTurretWithNumber();
         interactWithTempTurret();
     }
 
-    private void chooseTurretWithNumber()
-    {
-
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            spawnChosenTurret(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            spawnChosenTurret(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            spawnChosenTurret(2);
-        }
-    }
     private void interactWithTempTurret()
     {
         if (currentTempTurretObject != null)
@@ -63,17 +42,14 @@ public class TurretPlacer : MonoBehaviour
         }
     }
 
-    void spawnChosenTurret(int turretIndex)
+    public void spawnTempTurret(GameObject newTurret)
     {
-        bool hasEnoughFuel = allTempTurretPrefabs[turretIndex].
-            GetComponent<TempTurret>().getFuelNeed() <= totalFuel;
-        if (!hasEnoughFuel) return;
-
-        if (currentTempTurretObject == null)
+        if (currentTempTurretObject != null)
         {
-            currentTempTurretObject = Instantiate(allTempTurretPrefabs[turretIndex]);
-            currentTempTurret = currentTempTurretObject.GetComponent<TempTurret>();
+            Destroy(currentTempTurretObject);
         }
+        currentTempTurretObject = Instantiate(newTurret);
+        currentTempTurret = currentTempTurretObject.GetComponent<TempTurret>();
     }
 
     void moveTurret()
@@ -99,8 +75,9 @@ public class TurretPlacer : MonoBehaviour
         if (canPlaceTurret)
         {
             currentTempTurret.startBuilding();
-            totalFuel -= currentTempTurret.getFuelNeed();
+            player.minusFuel(currentTempTurret.getFuelNeed());
             currentTempTurretObject = null;
+            AudioManager.Instance.PlaySound("player_place_turret", gameObject);
         }
 
     }
@@ -133,8 +110,4 @@ public class TurretPlacer : MonoBehaviour
 
     }
 
-    public string getTotalFuel()
-    {
-        return totalFuel.ToString();
-    }
 }

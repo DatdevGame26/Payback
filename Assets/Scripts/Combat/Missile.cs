@@ -7,6 +7,7 @@ public class Missile : Bullet
     [Header("Missile")]
     [SerializeField] float delayFollow;
     [SerializeField] float turnSpeed = 3f; // Tốc độ quay
+    [SerializeField] float stopFollowAfterTime;
 
     Transform followTarget;
     Rigidbody rb;
@@ -14,7 +15,7 @@ public class Missile : Bullet
     Vector3 lastTargetPos;
     Vector3 followDirection;
     bool startFollow;
-    private void Start()
+    protected override void Start()
     {
         rb = GetComponent<Rigidbody>();
         StartCoroutine(waitThenFollowTarget());
@@ -57,5 +58,15 @@ public class Missile : Bullet
     {
         yield return new WaitForSeconds(delayFollow);
         startFollow = true;
+        if(stopFollowAfterTime != 0)
+        {
+            StartCoroutine(waitThenStopFollowTarget());
+        } 
+    }
+
+    IEnumerator waitThenStopFollowTarget()
+    {
+        yield return new WaitForSeconds(stopFollowAfterTime);
+        startFollow = false;
     }
 }
