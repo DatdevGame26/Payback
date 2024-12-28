@@ -123,6 +123,11 @@ public class Shop : MonoBehaviour
         chosenStat.Upgrade();
     }
 
+    public bool IsShopOpened()
+    {
+        return isShopOpened;
+    }
+
 }
 
 

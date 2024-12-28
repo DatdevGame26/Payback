@@ -17055,6 +17055,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPaused: 0
   pausePanel: {fileID: 1346559157}
+  tutorialPanel: {fileID: 504832794}
+  shop: {fileID: 1526379402}
 --- !u!82 &404613527
 AudioSource:
   m_ObjectHideFlags: 0
