@@ -94490,7 +94490,7 @@ MonoBehaviour:
   maxHealth: 200
   baseSpeed: 9
   jumpForce: 10
-  initFuel: 200
+  initFuel: 999999
   playerWeapon: {fileID: 2086535536}
   camFPS: {fileID: 963194229}
   hurtIndicator: {fileID: 677679181}

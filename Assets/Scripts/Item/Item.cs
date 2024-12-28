@@ -1,12 +1,21 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//  Loại vật phẩm
+public enum ItemType
+{
+    Health,
+    Grenade,
+    Ammo,
+    Fuel
+}
+
 public class Item : MonoBehaviour
 {
-    public ItemType itemType;
-    public int amount;
-    Transform playerT;
+    [SerializeField] ItemType itemType;     //  Loại vật phẩn
+    [SerializeField] int amount;        //  Số lượng
+    Transform playerT;  
     Rigidbody rb;
     Collider col;
 
@@ -23,6 +32,7 @@ public class Item : MonoBehaviour
     {
         if (playerT == null) return;
 
+        //  Nếu người chơi đến đủ gần, vật phẩm sẽ chuyển collider từ Non-Trigger (tương tác với vật lý) sang Trigger để đi xuyên vật thể đến với người chơi
         if (Vector3.Distance(transform.position, playerT.position) <= 10)
         {
             Vector3 followDir = (playerT.position - transform.position).normalized;
@@ -32,6 +42,7 @@ public class Item : MonoBehaviour
         else col.isTrigger = false;
     }
 
+    //   Nếu va phải người chơi, dựa vào loại vật phẩm để tăng đúng số lượng cần thiết, sau đó tự xoá nó khỏi game
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -62,16 +73,11 @@ public class Item : MonoBehaviour
                         break;
                     }
             }
+
+            //  Chạy âm thanh bên phía người chơi khi thu thập vật phẩm
             player.playPickUpItemSound();
             Destroy(gameObject);
         }
     }
 
-    public enum ItemType
-    {
-        Health,
-        Grenade,
-        Ammo,
-        Fuel
-    }
 }

@@ -1,8 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+//      UI hiển thị máu, đạn, nhiên liệu của người chơi
 public class NumberDisplayer : MonoBehaviour
 {
     [SerializeField] GameObject playerGO;

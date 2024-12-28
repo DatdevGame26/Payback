@@ -1,13 +1,15 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//   Người chơi và Boss dùng Grenade
 public class Grenade : MonoBehaviour
 {
     [SerializeField] HostileTag hostileTag;
-    [SerializeField] GameObject explosion;
-    [SerializeField] float explodeCountdown;
-    [SerializeField] bool inCountDownRange;
+    [SerializeField] GameObject explosion;  //  Vụ nổ được tạo
+    [SerializeField] float explodeCountdown;    //  Hết thời gian sẽ phát nổ
+    [SerializeField] bool inCountDownRange;     //  Thời gian phát nổ sẽ bị lệch
 
     float timer;
     void Start()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Turret : LiveEntity
+public class Turret : MonoBehaviour
 {
     [SerializeField] protected float attackRange;
     [SerializeField] protected float fireRate;
@@ -15,21 +15,17 @@ public class Turret : LiveEntity
     protected Transform currentTarget;
     protected float timer;
 
-    protected override void Awake()
+    protected virtual void Awake()
     {
-        base.Awake();
         timer = 1;
     }
 
-    protected override void Start()
+    protected virtual void Start()
     {
-        base.Start();
     }
 
-    protected override void Update()
+    protected virtual void Update()
     {
-        base.Update();
-
         timer -= Time.deltaTime;
         if (currentTarget == null)
         {

@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+//  UI nâng cấp súng người chơi
 public class UpgradeGunPanel : MonoBehaviour
 {
     [SerializeField] Image[] allStackImages;

@@ -24,7 +24,6 @@ public class PlayerWeapon : MonoBehaviour
     [Header("Gun SFX")]
     [SerializeField] AudioClip shootBulletSFX;
     [SerializeField] AudioClip shootGrenadeSFX;
-    AudioSource weaponSource;
 
     int currentAmmo;
     int currentGrenade;
@@ -41,8 +40,6 @@ public class PlayerWeapon : MonoBehaviour
 
     void Start()
     {
-        weaponSource = GetComponent<AudioSource>();
-
         firePoint.LookAt(convergencePoint);
 
         baseAccuracy = accuracy;

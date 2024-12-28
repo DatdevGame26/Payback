@@ -1,8 +1,11 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+//  UI cho thanh có thể lấp đầy, các thanh dùng gồm: Thanh máu, thanh tiến trình
+//  Dựa trên giá trị hiện tại và giá trị max
 
 public class FillBar : MonoBehaviour
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//  Điều chỉnh ánh sáng theo hiệu ứng (giảm cường độ sáng theo thời gian tồn tại của VFX)
 public class LightIntensityDecrease : MonoBehaviour
 {
     [SerializeField] Light particleLight;

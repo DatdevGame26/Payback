@@ -5,25 +5,26 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    //  Danh sách các kẻ thù đang tồn tại trong cảnh
     public List<GameObject> activeEnemies = new List<GameObject>();
 
-    [SerializeField] bool stopSpawning;
-    [SerializeField] TextMeshProUGUI prepareText;
-    [SerializeField] FillBar progressBar;
-    [SerializeField] int enemyCountEachWave;
+    [SerializeField] bool stopSpawning;     //  Dừng sinh ra kẻ thù
+    [SerializeField] TextMeshProUGUI prepareText;   //  Text màu đỏ
+    [SerializeField] FillBar progressBar;   //  Thanh tiến trình màn chơi
+    [SerializeField] int enemyCountEachWave;    //  Số lượng kẻ thù để kết thúc một wave
 
     [Header("Normal Enemy")]
-    [SerializeField] GameObject enemySpawnBall;
-    [SerializeField] GameObject[] enemyPrefabs;
-    [SerializeField] Transform[] spawnPoints;
-    [SerializeField] float spawnInterval = 3f;
-    [SerializeField] float waitToSpawnTime = 15f;
+    [SerializeField] GameObject enemySpawnBall;     //  Cầu sinh ra kẻ thù
+    [SerializeField] GameObject[] enemyPrefabs;     //  Danh sách prefab kẻ thù để nhân bản
+    [SerializeField] Transform[] spawnPoints;       //  Các điểm thả cầu sinh kẻ thù
+    [SerializeField] float spawnInterval = 3f;      //  Thời gian để sinh kẻ thù tiếp theo
+    [SerializeField] float waitToSpawnTime = 15f;   //  Thời gian lúc đầu đợi để bắt đầu wave đầu tiên
 
     [Header("Boss")]
-    [SerializeField] GameObject bossSpawnBall;
-    [SerializeField] int spawnCountToTriggerBossFight;
-    [SerializeField] Transform bossSpawnPos;
-    [SerializeField] float waitToSpawnBossTime;
+    [SerializeField] GameObject bossSpawnBall;      //  Cầu sinh ra Boss
+    [SerializeField] int spawnCountToTriggerBossFight;  //  Số lượng kẻ thù cần sinh để tiến đến Boss cuối cùng
+    [SerializeField] Transform bossSpawnPos;        //  Vị trí sinh ra Boss
+    [SerializeField] float waitToSpawnBossTime;     //  Đợi để Boss sinh ra
 
     List<GameObject> enemyPrefabsWillBeSpawn = new List<GameObject>();
     float spawnTimer;

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +6,12 @@ public class Explosion : MonoBehaviour
 {
     [SerializeField] HostileTag hostileTag;
     [SerializeField] int explosionDamage;
-    [SerializeField] string soundName;
-    [SerializeField] float exploMaxSoundRange = 50;
+    [SerializeField] string soundName;  //  Âm thanh lúc nổ
+    [SerializeField] float exploMaxSoundRange = 50;  // Người chơi đi quá khoảng cách này thì sẽ không nghe thấy tiếng nổ nữa
     private void Start()
     {
         StartCoroutine(waitThenTurnOffCollider());
+        //  Chơi nhạc
         AudioManager.Instance.createSFXgameObject(soundName, transform.position, exploMaxSoundRange);
     }
     private void OnTriggerEnter(Collider other)
@@ -25,6 +26,7 @@ public class Explosion : MonoBehaviour
         }
     }
 
+    //  Tắt Collider đi để tránh gây sát thương nhiều lần
     IEnumerator waitThenTurnOffCollider()
     {
         Collider col = GetComponent<Collider>();
